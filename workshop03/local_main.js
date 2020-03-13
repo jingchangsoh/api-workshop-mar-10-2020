@@ -59,7 +59,7 @@ new OpenAPIValidator({
                 resp.set('X-generated-on', (new Date()).toDateString());
                 //send data
                 resp.json(result);
-            }
+            } 
         )
 
         const options = {
