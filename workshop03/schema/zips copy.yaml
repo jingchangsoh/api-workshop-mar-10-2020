@@ -1,0 +1,128 @@
+openapi: "3.0.3"
+info:
+  title: "ZIPs REST API"
+  description: "My first API"
+  version: "v1.0"
+
+# this is a comment
+servers:
+  - url: 'http://localhost:3000'
+    description: "Development Server"
+
+components:
+  schemas: 
+    states:
+      type: string
+      enum: ["MA", "RI", "NH", "ME", "VT", "CT", "NY", "NJ",
+            "PA", "DE", "DC", "MD", "VA", "WV", "NC", "SC",
+            "GA", "FL", "AL", "TN", "MS", "KY", "OH", "IN",
+            "MI", "IA", "WI", "MN", "SD", "ND", "MT", "IL",
+            "MO", "KS", "NE", "LA", "AR", "OK", "TX", "CO",
+            "WY", "ID", "UT", "AZ", "NM", "NV", "CA", "HI",
+            "OR", "WA", "AK"]
+    city:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: string
+        city:
+          type: string
+          description: city name
+        loc:
+          type: array
+          items:
+            type: number
+          maxItems: 2
+          minItems: 2
+        pop:
+          type: number
+          minimum: 10
+        state:
+          type: string
+          enum: ["MA", "RI", "NH", "ME", "VT", "CT", "NY", "NJ",
+                "PA", "DE", "DC", "MD", "VA", "WV", "NC", "SC",
+                "GA", "FL", "AL", "TN", "MS", "KY", "OH", "IN",
+                "MI", "IA", "WI", "MN", "SD", "ND", "MT", "IL",
+                "MO", "KS", "NE", "LA", "AR", "OK", "TX", "CO",
+                "WY", "ID", "UT", "AZ", "NM", "NV", "CA", "HI",
+                "OR", "WA", "AK"]
+
+
+paths: 
+  /api/state/{stateId}:
+    get:
+      description: Get cities in a state
+      operationId: getCitiesFromState
+      parameters:
+        - name: stateId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/states"
+        - name: limit
+          in: query
+          schema:
+            type: number
+            minimum: 1
+        - name: offset
+          in: query
+          schema:
+            type: number
+            minimum: 0
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/city"
+
+
+  /api/states:
+    get:
+      description: "Get a list of all the states"
+      operationId: getStates
+      responses: 
+        200:
+          description: Default result representation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
+
+  # /api/state/{state}:
+  #   get:
+  #     description: "Get a list of all the states by State Id"
+  #     operationId: getStatesbyStateId
+  #     parameters:
+  #       - name: state
+  #         required: true
+  #         in: path
+  #         schema:
+  #           type: string
+  #       - name: limit
+  #         in: query
+  #         schema:
+  #           type: number
+  #           default: 20
+  #       - name: offset
+  #         in: query
+  #         schema:
+  #           type: number
+  #     responses: 
+  #       200:
+  #         description: Default result representation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 type: string
+
+       
